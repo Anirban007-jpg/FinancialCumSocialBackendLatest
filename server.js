@@ -11,13 +11,13 @@ require('dotenv').config();
 // app
 const app = express();
 
-const admin = require("firebase-admin");
-const credentials = require("./key.json");
+// const admin = require("firebase-admin");
+// const credentials = require("./key.json");
 // db
 
-admin.initializeApp({
+// admin.initializeApp({
     // credential: admin.credential.cert(credentials)
-})
+// })
 // const db = admin.firestore();
 mongoose.connect(process.env.DATABASE, {useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false, useUnifiedTopology: true}).then(() => console.log('DB connected'));
 
