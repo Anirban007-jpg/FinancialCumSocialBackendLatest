@@ -9,7 +9,8 @@ const companySchema = new mongoose.Schema({
         index: true,
     },
     TAN_No: {
-        type: String
+        type: String,
+        unique: true
     },
     registered_company_email: {
         type: String,
@@ -41,7 +42,8 @@ const companySchema = new mongoose.Schema({
         type: String
     },
     company_PAN: {
-        type: String
+        type: String,
+        unique: true
     },
     no_of_directors: {
         type: Number
