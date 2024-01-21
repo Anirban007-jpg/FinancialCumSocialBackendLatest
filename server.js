@@ -32,7 +32,7 @@ app.use(cors());
 
 
 // call the routes
-// fs.readdirSync('./routes').map((r) => app.use('/', require(`./routes/${r}`)));     // localhost:5005/
+fs.readdirSync('./routes').map((r) => app.use('/', require(`./routes/${r}`)));     // localhost:5005/
 
 
 app.use(function (err, req, res, next) {
