@@ -30,8 +30,11 @@ const companySchema = new mongoose.Schema({
         type: String
     },
     role: {
-        type: Number,
-        default: 0
+        type: String,
+        default: 'Company'
+    },
+    about_company : {
+        type: String
     },
     resetPasswordLink: {
         data: String,
