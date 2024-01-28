@@ -22,11 +22,13 @@ const companySchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    hashed_password: {
-        type: String,
-        required: true
+    CompanyLogo: {
+        data: Buffer,
+        contentType: String
     },
-    salt: String,
+    password: {
+        type: String
+    },
     role: {
         type: Number,
         default: 0
@@ -50,36 +52,28 @@ const companySchema = new mongoose.Schema({
     },
     details_of_partners: {
         type: String
+    },
+    Acknowledgement_No:{
+        type: String, 
+        trim: true,
+        upperCase: true
+    },
+    updated_on: {
+        type: Date
+    },
+    registered_on: {
+        type: Date,
+        default: Date.now()
+    },
+    verification_code: {
+        type: Number
+    },
+    email_verified : {
+        type: Number,
+        default: 0
     }
 }, {timestamp: true})
 
-companySchema.virtual('password').set(function(password) {
-    // create a temporarily variable called _password
-    this._password = password;
-    // generate salt
-    this.salt = this.makeSalt();
-    // encryptPassword
-    this.hashed_password = this.encryptPassword(password);
-}).get(function() {
-    return this._password
-});
 
-companySchema.methods = {
-
-    authenticate: function(plainText){
-        return this.encryptPassword(plainText) === this.hashed_password;
-    },
-    encryptPassword: function(password) {
-        if (!password) return '';
-        try {
-            return crypto.createHmac('sha1', this.salt).update(password).digest('hex');
-        }catch(err){
-            return '';
-        }
-    },
-    makeSalt: function() {
-        return Math.round(new Date().valueOf()* Math.random()) + '';
-    }
-}
 
 module.exports = mongoose.model('Company', companySchema);
