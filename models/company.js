@@ -78,5 +78,4 @@ const companySchema = new mongoose.Schema({
 }, {timestamp: true})
 
 
-
 module.exports = mongoose.model('Company', companySchema);

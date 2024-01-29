@@ -57,24 +57,26 @@ exports.signup = (req, res) => {
 
 exports.login = (req,res) => {
  const {TAN_No, password} = req.body;
- Company.findOne({TAN_No}).exec((err, company) => {
+ Company.findOne({TAN_No: req.body.TAN_No }).exec((err, company) => {
     if (err || !company){
         return res.status(400).json({
             error: "Company dosen't exsist!!! Please Check again"
         });
     }
 
-    if (!company.authenticate(password)) {
+    var checked = bcrypt.compareSync(password, company.password);
+
+    if (!checked) {
         return res.status(400).json({
           error: "Password is wrong"
         });
     }
 
-    const token = jwt.sign({_id: user._id}, process.env.JWT_SECRET, {expiresIn: '1d'});
+    const token = jwt.sign({_id: company._id}, process.env.JWT_SECRET, {expiresIn: '1d'});
 
     res.cookie('token', token, {expiresIn: '1d'});
 
-    const {Company_Name,TAN_No,registered_company_email,role,company_registered_address,registered_company_mobile_no,Acknowledgement_No} = company;
+    const {Company_Name,TAN_No,registered_company_email,role,company_registered_address,registered_company_mobile_no,profile,Acknowledgement_No} = company;
     return res.status(200).json({
         token,
         company: {Company_Name,TAN_No,registered_company_email,role,company_registered_address,registered_company_mobile_no,Acknowledgement_No,profile}
