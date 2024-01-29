@@ -13,9 +13,9 @@ const bcrypt = require('bcrypt');
 
 exports.signup = (req, res) => {
     Company.findOne({TAN_No: req.body.TAN_No}).exec((err,company) => {
-        if (err){
+        if (company){
             return res.status(400).json({
-                error: "User already exsists"
+                error: "Company already exsists"
             })
         }
     
