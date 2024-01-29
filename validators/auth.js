@@ -9,3 +9,8 @@ exports.companySignupValidator = [
     check('registered_company_mobile_no').not().isEmpty().withMessage('Mobile Number is mandatory').isLength({min:10 , max:11}).withMessage('Mobile No must be 11 charecters long'),
     check('password').isLength({min: 6}).withMessage('Password must contain atleast 6 charecters long').matches(/\d/).withMessage("Password must contain a number"),
 ]
+
+exports.companySigninValidator = [
+    check('TAN_No').not().isEmpty().withMessage('Must be a valid TAN No.. please check again'),
+    check('password').isLength({min: 6}).withMessage('Password must contain atleast 6 charecters long').matches(/\d/).withMessage("Password must contain a number")
+]

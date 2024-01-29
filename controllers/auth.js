@@ -54,3 +54,100 @@ exports.signup = (req, res) => {
         })
     })
 }
+
+exports.login = (req,res) => {
+ const {TAN_No, password} = req.body;
+ Company.findOne({TAN_No}).exec((err, company) => {
+    if (err || !company){
+        return res.status(400).json({
+            error: "Company dosen't exsist!!! Please Check again"
+        });
+    }
+
+    if (!company.authenticate(password)) {
+        return res.status(400).json({
+          error: "Password is wrong"
+        });
+    }
+
+    const token = jwt.sign({_id: user._id}, process.env.JWT_SECRET, {expiresIn: '1d'});
+
+    res.cookie('token', token, {expiresIn: '1d'});
+
+    const {Company_Name,TAN_No,registered_company_email,role,company_registered_address,registered_company_mobile_no,Acknowledgement_No} = company;
+    return res.status(200).json({
+        token,
+        company: {Company_Name,TAN_No,registered_company_email,role,company_registered_address,registered_company_mobile_no,Acknowledgement_No,profile}
+    })
+ })  
+}
+
+
+exports.requireSignin = ejwt({
+    secret: process.env.JWT_SECRET,
+    algorithms: ["HS256"], // added later
+    userProperty: "auth"
+  });
+
+  
+exports.signout = (req,res) => {
+    res.clearCookie("token")
+    res.json({
+      message: 'Signout Success'
+    })
+  }
+
+  exports.authMiddleware = (req,res,next) => {
+    const authUserId = req.auth._id;
+    User.findById({_id: authUserId}).exec((err,company) => {
+      if (err || !company){
+       return res.status(400).json({
+         error: "Company already exsists"
+       })
+      }
+ 
+      req.profile = company;
+      next();
+    })
+ }
+
+ exports.companyMiddleware = (req,res,next) => {
+    const authUserId = req.auth._id;
+    User.findById({_id: authUserId}).exec((err,company) => {
+      if (err || !company){
+       return res.status(400).json({
+         error: "User already exsists"
+       })
+      }
+  
+      if (company.role !== "Company" || company.role === "Admin"){
+        return res.status(400).json({
+          error: "Company Area ! Access Denied"
+        })
+      }
+  
+      req.profile = company;
+      next();
+    })
+    
+  }
+  
+  exports.adminMiddleware = (req,res,next) => {
+    const adminUserId = req.auth._id;
+    User.findById({_id: adminUserId}).exec((err,company) => {
+      if (err || !company){
+       return res.status(400).json({
+         error: "Company already exsists"
+       })
+      }
+      if (company.role !== "Admin" || company.role === "Compamy"){
+        return res.status(400).json({
+          error: "Admin Resource ! Access Denied"
+        })
+      }
+  
+      req.profile = company;
+      next();
+    })
+  }
+  
