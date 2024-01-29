@@ -2,7 +2,7 @@ const fo = require('formidable');
 const fs = require('fs');
 // const sid = require('shortid');
 const jwt = require('jsonwebtoken');
-const ejwt = require('express-jwt');
+const { expressjwt: ejwt } = require('express-jwt');
 const sgMail = require('@sendgrid/mail'); // SENDGRID_API_KEY
 const nm = require('nodemailer');
 require('dotenv').config()
