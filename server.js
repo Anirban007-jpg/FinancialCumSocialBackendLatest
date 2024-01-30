@@ -5,7 +5,6 @@ const cp = require('cookie-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const fs = require("fs")
-
 require('dotenv').config(); 
 
 // app
@@ -26,9 +25,9 @@ app.use(morgan("dev"))
 app.use(express.json())
 app.use(cp())
 
+
 //cors
 app.use(cors());    
-
 
 
 // call the routes

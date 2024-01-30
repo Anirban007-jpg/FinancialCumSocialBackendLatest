@@ -9,7 +9,7 @@ require('dotenv').config()
 const _ = require('lodash');
 const Company = require('../models/company');
 const bcrypt = require('bcrypt');
-// const { OAuth2Client } = require('google-auth-library');
+const { OAuth2Client } = require('google-auth-library');
 
 exports.signup = (req, res) => {
     Company.findOne({TAN_No: req.body.TAN_No}).exec((err,company) => {
@@ -82,6 +82,15 @@ exports.login = (req,res) => {
         company: {Company_Name,TAN_No,registered_company_email,role,company_registered_address,registered_company_mobile_no,Acknowledgement_No,profile}
     })
  })  
+}
+
+const client = new OAuth2Client('539870753617-cjb7cdvolethiaj7hl2phmlr7nq322ub.apps.googleusercontent.com');
+exports.googleLogin = (req,res) => {
+    const { idToken } = req.body;
+    admin.auth().verifyIdToken({ idToken: idToken , audience: '539870753617-cjb7cdvolethiaj7hl2phmlr7nq322ub.apps.googleusercontent.com' }).then(response => {
+      console.log(response)
+    })
+      
 }
 
 
