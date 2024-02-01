@@ -93,6 +93,73 @@ exports.googleLogin = (req,res) => {
       
 }
 
+exports.forgotPasword = (req,res) => {
+  const { email } = req.body.registered_company_email;
+
+  Company.findOne({ email }, (err, company) => {
+      if (err || !company) {
+          return res.status(401).json({
+              error: 'User with that email does not exist'
+          });
+      }
+
+      const token = jwt.sign({ _id: company._id }, process.env.JWT_RESET_PASSWORD, { expiresIn: '10m' });
+
+      let transporter = nm.createTransport({
+        host: "smtp.gmail.com",
+        port: 465,
+        auth: {
+            user: 'abanerjee763@gmail.com',
+            pass: 'hbzk pige pesf ikmb',
+        },
+        secure: true
+    
+        })
+      // email
+      
+      const mailOptions = {
+          from: 
+          {
+            name: 'FINANCIA',
+            address : 'abanerjee763@gmail.com',
+          },
+          to: company.registered_company_email,
+          subject: 'Email to reset password',
+          html: `
+          <p>Please use the following link to reset your password:</p> +
+          <p>${process.env.CLIENT_URL}/auth/password/reset/${token}</p>
+          <hr />
+          <p>This email may contain sensetive information</p>
+          <p>https://seoblog.com</p>
+        };
+        `
+      };
+      // populating the db > user > resetPasswordLink
+      return company.updateOne({ resetPasswordLink: token }, (err, success) => {
+          if (err) {
+              return res.json({ error: err });
+          } else {
+            transporter.sendMail(mailOptions, (err,success) => {
+              if(err){
+                  console.log(err);
+                  res.status(400).json({
+                      error: err
+                  });
+                  
+              }
+      
+              res.status(200).json({
+                  message: "password reset link sent succesfully!"
+              })
+                })
+          }
+      });
+  });
+};
+
+exports.ResetPassword = (req,res) => {
+  
+}
 
 exports.requireSignin = ejwt({
     secret: process.env.JWT_SECRET,

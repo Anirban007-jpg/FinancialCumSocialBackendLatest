@@ -14,3 +14,8 @@ exports.companySigninValidator = [
     check('TAN_No').not().isEmpty().withMessage('Must be a valid TAN No.. please check again'),
     check('password').isLength({min: 6}).withMessage('Password must contain atleast 6 charecters long').matches(/\d/).withMessage("Password must contain a number")
 ]
+
+
+exports.companyForgotPasswordValidator = [
+    check('registered_company_email').not().isEmpty().withMessage("Email is mandatory").isEmail().withMessage('Must be a valid email address')
+ ]
