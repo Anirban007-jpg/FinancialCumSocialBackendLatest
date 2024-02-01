@@ -19,3 +19,12 @@ exports.companySigninValidator = [
 exports.companyForgotPasswordValidator = [
     check('registered_company_email').not().isEmpty().withMessage("Email is mandatory").isEmail().withMessage('Must be a valid email address')
  ]
+
+ 
+exports.resetPasswordValidator = [
+    check('newPassword')
+        .not()
+        .isEmpty()
+        .isLength({ min: 6 })
+        .withMessage('Password must be at least 6 characters long')
+];

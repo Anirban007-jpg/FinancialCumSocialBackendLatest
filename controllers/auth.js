@@ -158,7 +158,41 @@ exports.forgotPasword = (req,res) => {
 };
 
 exports.ResetPassword = (req,res) => {
-  
+  const { resetPasswordLink, newPassword } = req.body;
+
+  if (resetPasswordLink) {
+      jwt.verify(resetPasswordLink, process.env.JWT_RESET_PASSWORD, function(err, decoded) {
+          if (err) {
+              return res.status(401).json({
+                  error: 'Expired link. Try again'
+              });
+          }
+          Company.findOne({ resetPasswordLink }, (err, company) => {
+              if (err || !company) {
+                  return res.status(401).json({
+                      error: 'Something went wrong. Try later'
+                  });
+              }
+              const updatedFields = {
+                  password: newPassword,
+                  resetPasswordLink: ''
+              };
+
+              company = _.extend(company, updatedFields);
+
+              company.save((err, result) => {
+                  if (err) {
+                      return res.status(400).json({
+                          error: err
+                      });
+                  }
+                  res.json({
+                      message: `Great! Now you can login with your new password`
+                  });
+              });
+          });
+      });
+  }
 }
 
 exports.requireSignin = ejwt({
