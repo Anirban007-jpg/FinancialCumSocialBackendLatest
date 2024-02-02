@@ -174,7 +174,7 @@ exports.ResetPassword = (req,res) => {
                   });
               }
               const updatedFields = {
-                  password: newPassword,
+                  password: bcrypt.hashSync(newPassword),
                   resetPasswordLink: ''
               };
 
