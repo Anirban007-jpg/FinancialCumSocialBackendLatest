@@ -109,8 +109,8 @@ exports.forgotPasword = (req,res) => {
         host: "smtp.gmail.com",
         port: 465,
         auth: {
-            user: 'abanerjee763@gmail.com',
-            pass: 'hbzk pige pesf ikmb',
+            user: 'financia2926@gmail.com',
+            pass: 'fmwh lsuq mhum echs',
         },
         secure: true
     

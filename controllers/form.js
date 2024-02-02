@@ -7,15 +7,15 @@ exports.contactForm = (req, res) => {
     port: 465,
     service: "gmail",
     auth: {
-        user: 'abanerjee763@gmail.com',
-        pass: 'hbzk pige pesf ikmb',
+        user: 'financia2926@gmail.com',
+        pass: 'fmwh lsuq mhum echs',
     },
     secure: false
 
     })
    var message = {
         from: email,
-        to: 'abanerjee763@gmail.com',
+        to: 'financia2926@gmail.com',
         subject: 'Contact Mail',
         html: `<h1>Sent by ${name}</h1><br/><p>${usermessage}</p>`
     };
