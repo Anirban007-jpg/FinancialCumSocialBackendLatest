@@ -84,6 +84,21 @@ exports.login = (req,res) => {
  })  
 }
 
+exports.getALlCompmanies  = (req,res) => {
+  Company.find((err, companies) => {
+    if (err){
+      return res.status(400).json({
+          error: "Oops! Soimethimg went Wrong"
+      })
+    }
+
+    return res.status(200).json({
+     companies
+    })
+
+  })
+}
+
 const client = new OAuth2Client('539870753617-cjb7cdvolethiaj7hl2phmlr7nq322ub.apps.googleusercontent.com');
 exports.googleLogin = (req,res) => {
     const { idToken } = req.body;
