@@ -213,7 +213,7 @@ exports.ResetPassword = (req,res) => {
 exports.requireSignin = ejwt({
     secret: process.env.JWT_SECRET,
     algorithms: ["HS256"], // added later
-    userProperty: "auth"
+    credentialsRequired: false,
   });
 
   
@@ -239,11 +239,12 @@ exports.signout = (req,res) => {
  }
 
  exports.companyMiddleware = (req,res,next) => {
-    const authUserId = req.auth._id;
-    User.findById({_id: authUserId}).exec((err,company) => {
+    const authUserId = req.user._id;
+    console.log(authUserId);
+    Company.findById({_id: authUserId}).exec((err,company) => {
       if (err || !company){
        return res.status(400).json({
-         error: "User already exsists"
+         error: "Company already exsists"
        })
       }
   
@@ -261,7 +262,7 @@ exports.signout = (req,res) => {
   
   exports.adminMiddleware = (req,res,next) => {
     const adminUserId = req.auth._id;
-    User.findById({_id: adminUserId}).exec((err,company) => {
+    Company.findById({_id: adminUserId}).exec((err,company) => {
       if (err || !company){
        return res.status(400).json({
          error: "Company already exsists"
