@@ -21,7 +21,14 @@ exports.signup = (req, res) => {
     
         const {Company_Name,TAN_No,registered_company_email,role,company_registered_address,registered_company_mobile_no,password,confirmedPassword} = req.body;
         let profile = `${process.env.CLIENT_URL}/profile/${Company_Name}`;
-  
+        let Initials = "";
+        
+        for (let i=0;i< Company_Name.length; i++){
+          if (Company_Name[i].includes("ABCDEFGHIJKLMNOPQRSTUVWXYZ")){
+            Initials += Company_Name[i];
+          }
+        }
+        
         if (confirmedPassword === null){
             return res.status(403).json({
                 error: "Confirm your password"
@@ -37,7 +44,7 @@ exports.signup = (req, res) => {
         var password1 = bcrypt.hashSync(password,10);
         let Acknowledgement_No = _.times(15, () => _.random(35).toString(36)).join('').toUpperCase()
 
-        let newCompany = new Company({Company_Name,TAN_No,registered_company_email,role,company_registered_address,registered_company_mobile_no,password:password1,profile,Acknowledgement_No});
+        let newCompany = new Company({Company_Name,TAN_No,registered_company_email,role,Initials,company_registered_address,registered_company_mobile_no,password:password1,profile,Acknowledgement_No});
         
        
         newCompany.save((err, success) => {
