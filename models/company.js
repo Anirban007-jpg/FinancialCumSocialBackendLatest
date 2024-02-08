@@ -74,6 +74,9 @@ const companySchema = new mongoose.Schema({
     email_verified : {
         type: Number,
         default: 0
+    },
+    Initials: {
+        type: String
     }
 }, {timestamp: true})
 

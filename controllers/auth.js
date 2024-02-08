@@ -76,10 +76,10 @@ exports.login = (req,res) => {
 
     res.cookie('token', token, {expiresIn: '1d'});
 
-    const {Company_Name,TAN_No,registered_company_email,role,company_registered_address,registered_company_mobile_no,profile,Acknowledgement_No} = company;
+    const {Company_Name,TAN_No,registered_company_email,role,Initials,company_registered_address,registered_company_mobile_no,profile,Acknowledgement_No} = company;
     return res.status(200).json({
         token,
-        company: {Company_Name,TAN_No,registered_company_email,role,company_registered_address,registered_company_mobile_no,Acknowledgement_No,profile}
+        company: {Company_Name,TAN_No,registered_company_email,role,Initials,company_registered_address,registered_company_mobile_no,Acknowledgement_No,profile}
     })
  })  
 }
