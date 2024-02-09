@@ -29,7 +29,10 @@ const journalSchema = new mongoose.Schema({
     company_name: {
         type: String
     },
-    Currency_Type: {
+    Debit_Currency_Type: {
+        type: String
+    },
+    Credit_Currency_Type: {
         type: String
     }
 }, {timestamp: true})

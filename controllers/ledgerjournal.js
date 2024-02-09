@@ -11,12 +11,12 @@ exports.ledgercreation = (req,res) => {
             })
         }
 
-        const {AccountName,AccountGroup,SubAccountGroup,IndividualAccountGroup,company_name,Balance_Type,Financial_Year} = req.body;
+        const {AccountName,AccountGroup,SubAccountGroup,IndividualAccountGroup,company_name,Balance_Type,Financial_Year,Currency_Type} = req.body;
         const number = parseFloat(req.body.balStart).toFixed(3);
         const Opening_Balance = math.round(number, 0);
         const Balance = Opening_Balance;
         
-        let newLedger = new Ledger({AccountName,AccountGroup,SubAccountGroup,IndividualAccountGroup,company_name, Financial_Year,Balance_Type,Opening_Balance,Balance});
+        let newLedger = new Ledger({AccountName,AccountGroup,SubAccountGroup,IndividualAccountGroup,company_name,Currency_Type, Financial_Year,Balance_Type,Opening_Balance,Balance});
 
         newLedger.save((err, success) => {
             if (err){
@@ -36,7 +36,7 @@ exports.ledgercreation = (req,res) => {
 
 exports.journalcreation = (req,res) => {
         
-        const {Transaction_Date,Financial_Year,Assessment_Year,Debit_item_Account,Credit_item_Account,company_name,Narration} = req.body;
+        const {Transaction_Date,Financial_Year,Assessment_Year,Debit_item_Account,Credit_item_Account,company_name,Narration,Debit_Currency_Type,Credit_Currency_Type} = req.body;
         const number = parseFloat(req.body.Debit_item_Balance).toFixed(3);
         const Debit_item_Balance = math.round(number, 0);
         const number1 = parseFloat(req.body.Credit_item_Balance).toFixed(3);
@@ -124,7 +124,13 @@ exports.journalcreation = (req,res) => {
             })
         }
 
-        let newJournal = new Journal({Transaction_Date,Financial_Year,Assessment_Year,Debit_item_Account,Credit_item_Account,company_name,Debit_item_Balance,Credit_item_Balance,Narration});
+        if (Debit_Currency_Type.localeCompare(Credit_Currency_Type) !== 0){
+            return res.status(403).json({
+                error: "Debit and Credit Currency Type must be same"
+            })
+        }
+
+        let newJournal = new Journal({Transaction_Date,Financial_Year,Assessment_Year,Debit_item_Account,Debit_Currency_Type,Credit_Currency_Type,Credit_item_Account,company_name,Debit_item_Balance,Credit_item_Balance,Narration});
 
         newJournal.save((err, success) => {
             if (err){
