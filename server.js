@@ -5,7 +5,9 @@ const cp = require('cookie-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const fs = require("fs")
+const cron = require('node-cron');
 require('dotenv').config(); 
+
 
 // app
 const app = express();
@@ -33,6 +35,10 @@ app.use(cors());
 // call the routes
 fs.readdirSync('./routes').map((r) => app.use('/', require(`./routes/${r}`)));     // localhost:5005/
 
+cron.schedule('*/5 * * * *', () => {
+    console.log('running a task every two minutes');
+});
+  
 
 app.use(function (err, req, res, next) {
     if (err.name === 'UnauthorizedError'){
