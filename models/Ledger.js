@@ -22,6 +22,12 @@ const ledgerSchema = new mongoose.Schema({
     Opening_Balance: {
         type: Number
     },
+    Debtor_id: {
+        type: String
+    },
+    Creditor_id: {
+        type: String
+    },
     Balance : {
         type: Number
     },

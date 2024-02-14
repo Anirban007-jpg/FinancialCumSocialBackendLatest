@@ -15,9 +15,42 @@ exports.ledgercreation = (req,res) => {
         const number = parseFloat(req.body.balStart).toFixed(3);
         const Opening_Balance = math.round(number, 0);
         const Balance = Opening_Balance;
+
+        if (AccountName === "Debtor"){
+            const Debtor_id = math.round(math.random()*10000, 0);  
+            let newLedger = new Ledger({AccountName,AccountGroup,SubAccountGroup,IndividualAccountGroup,company_name,Currency_Type, Financial_Year,Balance_Type,Opening_Balance,Balance,Debtor_id});
+            newLedger.save((err, success) => {
+                if (err){
+                    return res.status(400).json({
+                        error: err
+                    })
+                }
+                else if(success){
+                    res.status(200).json({
+                        message: `${AccountName} A/C Ledger is created`
+                    })
+                }
+            })    
+        }
+
+        if (AccountName === "Creditor"){
+            const Creditor_id = math.round(math.random()*10000, 0);  
+            let newLedger = new Ledger({AccountName,AccountGroup,SubAccountGroup,IndividualAccountGroup,company_name,Currency_Type, Financial_Year,Balance_Type,Opening_Balance,Balance,Creditor_id});
+            newLedger.save((err, success) => {
+                if (err){
+                    return res.status(400).json({
+                        error: err
+                    })
+                }
+                else if(success){
+                    res.status(200).json({
+                        message: `${AccountName} A/C Ledger is created`
+                    })
+                }
+            })    
+        }
         
         let newLedger = new Ledger({AccountName,AccountGroup,SubAccountGroup,IndividualAccountGroup,company_name,Currency_Type, Financial_Year,Balance_Type,Opening_Balance,Balance});
-
         newLedger.save((err, success) => {
             if (err){
                 return res.status(400).json({
