@@ -1,10 +1,6 @@
 const {check} = require('express-validator');
 
 exports.ledgercreatevalidation = [
-    check('Financial_Year')
-        .not()
-        .isEmpty()
-        .withMessage('Please Enter the Account Name!'),
     check('AccountName')
         .not()
         .isEmpty()
@@ -25,6 +21,10 @@ exports.ledgercreatevalidation = [
         .not()
         .isEmpty()
         .withMessage('Please specify Dr or Cr balance'),
+    check('Financial_Year')
+        .not()
+        .isEmpty()
+        .withMessage('Please Enter the Financial Year!'),
 ];
 
 exports.journalcreatevalidation = [
