@@ -7,7 +7,7 @@ const { validateTokenMiddleware } = require('../controllers/validatetoken');
 const router = express.Router();
 
 router.post('/create-new-ledger', ledgercreatevalidation, runValidation, validateTokenMiddleware ,companyMiddleware,ledgercreation);
-router.get('/get-ledgers', validateTokenMiddleware ,companyMiddleware,getAllLedgers);
+router.post('/get-ledgers-details', validateTokenMiddleware ,companyMiddleware,getAllLedgers);
 router.get('/get-ledgers-specific', validateTokenMiddleware ,companyMiddleware,getAllLedgersAccount);
 router.put('/update-closing-balances', ledgervalidation, runValidation,validateTokenMiddleware ,companyMiddleware, updateAllClosingBalances);
 

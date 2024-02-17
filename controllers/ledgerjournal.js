@@ -180,8 +180,8 @@ exports.journalcreation = (req,res) => {
     }
 
 exports.getAllLedgers = (req,res) => {
-    Ledger.find({})
-    .select('AccountName Balance Opening_Balance Closing_Balance')
+    Journal.find({$or : [{Credit_item_Account: req.body.AccountName,Financial_Year: req.body.Financial_Year},{Debit_item_Account: req.body.AccountName,Financial_Year: req.body.Financial_Year}]})
+    .select('Debit_item_Account Transaction_Date Credit_item_Account Debit_item_Balance Credit_item_Balance Narration')
     .exec((err,data) => {
         if (err){
             return res.status(400).json({
