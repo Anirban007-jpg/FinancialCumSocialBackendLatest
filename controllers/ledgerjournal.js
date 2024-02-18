@@ -251,7 +251,7 @@ exports.getAllLedgersAccount = (req,res) => {
                 error: err
             })
         }
-        res.json(data);
+        return res.status(200).json(data);
     })
 }
 
