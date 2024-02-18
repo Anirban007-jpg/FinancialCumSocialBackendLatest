@@ -28,7 +28,7 @@ exports.ledgercreation = (req,res) => {
                 }
                 else if(success){
                     res.status(200).json({
-                        message: `${AccountName} A/C Ledger is created`
+                        message: `${AccountName} Ledger is created`
                     })
                 }
             })    
@@ -45,7 +45,7 @@ exports.ledgercreation = (req,res) => {
                 }
                 else if(success){
                     res.status(200).json({
-                        message: `${AccountName} A/C Ledger is created`
+                        message: `${AccountName} Ledger is created`
                     })
                 }
             })    
@@ -76,7 +76,7 @@ exports.journalcreation = async (req,res) => {
     var number1 = parseFloat(req.body.Credit_item_Balance).toFixed(3);
     var Credit_item_Balance = math.round(number1, 0);
  
-    if (Debit_item_Account === "Purchases"){
+    if (Debit_item_Account === "Purchases A/C"){
         var number4 = math.divide(parseFloat(Discount_Received).toFixed(3),100);
         var Discount_Received_Percentage = math.round(number4,3);
         var number5 = math.multiply(Discount_Received_Percentage,Debit_item_Balance);
@@ -98,7 +98,7 @@ exports.journalcreation = async (req,res) => {
         }
     }
 
-    if (Credit_item_Account === "Sales"){
+    if (Credit_item_Account === "Sales A/C"){
         var number6 = math.divide(parseFloat(Discount_Allowed).toFixed(3),100);
         var Discount_Allowed_Percentage = math.round(number6,3);
         var number7 = math.multiply(Discount_Allowed_Percentage,Debit_item_Balance);
@@ -199,8 +199,42 @@ exports.journalcreation = async (req,res) => {
         })
     }
 
+    // const value = math.add(Credit_item_Balance, Discount_Received_Balance);
+    // const value1 = math.add(Debit_item_Balance, Discount_Allowed_Balance);
+    // const value2 = math.add(Credit_item_Balance, Profit_on_Sale_of_Asset_Balance);
+    // const value3 = math.add(Debit_item_Balance, Loss_on_Sale_of_Asset_Balance);
+
+    // if (Debit_item_Balance !== value || value1 !== Credit_item_Balance || Debit_item_Balance !== value2 || value3 !== Credit_item_Balance || Debit_item_Balance !== Credit_item_Balance){
+    //     return res.status(403).json({
+    //         error: "Debit and Credit must be same"
+    //     })
+    // }
+
+
     
-    if (data.IndividualAccountGroup === "Assets" && Credit_item_Account === data.AccountName){
+    if (Credit_item_Account === "Sales A/C"){
+        let newPL = new ProfitLoss({Transaction_Date,Financial_Year,Assessment_Year,Discount_Allowed_Balance,Discount_Allowed_Balance_Type});
+        newPL.save((err,success) => {
+            if (err){
+                return res.status(400).json({
+                    error: err
+                })  
+            }
+    
+            return res.status(200);
+        })
+    } else if (Debit_item_Account === "Purchases A/C"){
+        let newPL = new ProfitLoss({Transaction_Date,Financial_Year,Assessment_Year,Discount_Received_Balance,Discount_Received_Balance_Type});
+        newPL.save((err,success) => {
+            if (err){
+                return res.status(400).json({
+                    error: err
+                })  
+            }
+    
+            return res.status(200);
+        })
+    } else if (data.IndividualAccountGroup === "Assets" && Credit_item_Account === data.AccountName){
         let newPL = new ProfitLoss({Transaction_Date,Financial_Year,Assessment_Year,Profit_on_Sale_of_Asset_Balance,Profit_on_Sale_of_Asset_Balance_Type,Loss_on_Sale_of_Asset_Balance,Loss_on_Sale_of_Asset_Balance_Type});
         newPL.save((err,success) => {
             if (err){
@@ -209,9 +243,12 @@ exports.journalcreation = async (req,res) => {
                 })  
             }
     
-            res.status(200).json()
+            return res.status(200)
         })
     }
+
+
+    
 
     let newJournal = new Journal({Transaction_Date, Profit_on_Sale_of_Asset_Balance,Profit_on_Sale_of_Asset_Balance_Type,Loss_on_Sale_of_Asset_Balance,Loss_on_Sale_of_Asset_Balance_Type,Discount_Received_Balance,Discount_Received_Balance_Type,Discount_Allowed_Balance,Discount_Allowed_Balance_Type,Financial_Year,Assessment_Year,Debit_item_Account,Debit_Currency_Type,Credit_Currency_Type,Credit_item_Account,company_name,Debit_item_Balance,Credit_item_Balance,Narration});
     

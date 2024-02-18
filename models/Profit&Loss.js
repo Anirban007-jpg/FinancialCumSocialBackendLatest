@@ -22,7 +22,19 @@ const ProfitLossSchema = new mongoose.Schema({
     },
     Loss_on_Sale_of_Asset_Balance_Type: {
         type: String
-    }
+    },
+    Discount_Allowed_Balance_Type : {
+        type: String,
+    },
+    Discount_Received_Balance_Type : {
+        type: String,
+    },
+    Discount_Allowed_Balance : {
+        type: Number
+    },
+    Discount_Received_Balance : {
+        type: Number
+    },
 }, {timestamp: true})
 
 
