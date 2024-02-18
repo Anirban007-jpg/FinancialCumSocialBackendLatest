@@ -1,7 +1,8 @@
 const Journal = require("../models/Journal")
 const Ledger = require("../models/Ledger")
 const _ = require('lodash');
-const math = require("mathjs")
+const math = require("mathjs");
+const ProfitLoss = require("../models/Profit&Loss");
 
 exports.ledgercreation = (req,res) => {
     Ledger.findOne({AccountName : req.body.AccountName}).exec((err,ledger) => {
@@ -198,9 +199,21 @@ exports.journalcreation = async (req,res) => {
         })
     }
 
-   
     let newJournal = new Journal({Transaction_Date, Profit_on_Sale_of_Asset_Balance,Profit_on_Sale_of_Asset_Balance_Type,Loss_on_Sale_of_Asset_Balance,Loss_on_Sale_of_Asset_Balance_Type,Discount_Received_Balance,Discount_Received_Balance_Type,Discount_Allowed_Balance,Discount_Allowed_Balance_Type,Financial_Year,Assessment_Year,Debit_item_Account,Debit_Currency_Type,Credit_Currency_Type,Credit_item_Account,company_name,Debit_item_Balance,Credit_item_Balance,Narration});
 
+    if (data.IndividualAccountGroup === "Assets" && Credit_item_Account === data.AccountName){
+        let newPL = new ProfitLoss({Transaction_Date,Financial_Year,Assessment_Year,Profit_on_Sale_of_Asset_Balance,Profit_on_Sale_of_Asset_Balance_Type,Loss_on_Sale_of_Asset_Balance,Loss_on_Sale_of_Asset_Balance_Type});
+        newPL.save((err,success) => {
+            if (err){
+                return res.status(400).json({
+                    error: err
+                })  
+            }
+    
+            res.status(200).json()
+        })
+    }
+    
     newJournal.save((err, success) => {
         if (err){
             return res.status(400).json({
