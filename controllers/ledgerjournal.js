@@ -199,8 +199,7 @@ exports.journalcreation = async (req,res) => {
         })
     }
 
-    let newJournal = new Journal({Transaction_Date, Profit_on_Sale_of_Asset_Balance,Profit_on_Sale_of_Asset_Balance_Type,Loss_on_Sale_of_Asset_Balance,Loss_on_Sale_of_Asset_Balance_Type,Discount_Received_Balance,Discount_Received_Balance_Type,Discount_Allowed_Balance,Discount_Allowed_Balance_Type,Financial_Year,Assessment_Year,Debit_item_Account,Debit_Currency_Type,Credit_Currency_Type,Credit_item_Account,company_name,Debit_item_Balance,Credit_item_Balance,Narration});
-
+    
     if (data.IndividualAccountGroup === "Assets" && Credit_item_Account === data.AccountName){
         let newPL = new ProfitLoss({Transaction_Date,Financial_Year,Assessment_Year,Profit_on_Sale_of_Asset_Balance,Profit_on_Sale_of_Asset_Balance_Type,Loss_on_Sale_of_Asset_Balance,Loss_on_Sale_of_Asset_Balance_Type});
         newPL.save((err,success) => {
@@ -213,6 +212,8 @@ exports.journalcreation = async (req,res) => {
             res.status(200).json()
         })
     }
+
+    let newJournal = new Journal({Transaction_Date, Profit_on_Sale_of_Asset_Balance,Profit_on_Sale_of_Asset_Balance_Type,Loss_on_Sale_of_Asset_Balance,Loss_on_Sale_of_Asset_Balance_Type,Discount_Received_Balance,Discount_Received_Balance_Type,Discount_Allowed_Balance,Discount_Allowed_Balance_Type,Financial_Year,Assessment_Year,Debit_item_Account,Debit_Currency_Type,Credit_Currency_Type,Credit_item_Account,company_name,Debit_item_Balance,Credit_item_Balance,Narration});
     
     newJournal.save((err, success) => {
         if (err){
