@@ -1,6 +1,9 @@
 const jwt = require("jsonwebtoken");
 require('dotenv').config()
 
+
+// berarer token is neccessary for admin functions
+
 exports.validateTokenMiddleware = (req,res,next) => {
     let token;
     let authHeader = req.headers.Authorization || req.headers.authorization;
